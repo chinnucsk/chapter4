@@ -3,14 +3,12 @@
 
 go() ->
   
-  Pid = spawn(echo, loop, []),
-  Pid ! { self(), hello },
+  register(echo, spawn(echo, loop, [])),
+  echo ! { self(), hello },
 
   receive
     { _Pid, Msg } -> io:format("~w~n", [Msg])
-  end,
-
-  Pid ! stop.
+  end.
 
 loop() ->
   
